@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered live face mask detection using computer vision and your webcam.">
+    <title>Face Mask Detection — Live AI Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="15" r="10" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M10 25 Q10 35 20 35 Q30 35 30 25" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                        <path d="M12 18 Q20 28 28 18" stroke="currentColor" stroke-width="2" fill="rgba(99,102,241,0.3)"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Face Mask Detection</h1>
+                    <p class="subtitle">Live AI Detection • Powered by Computer Vision</p>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span class="badge-dot"></span>
+                <span>MobileNetV2 + OpenCV</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Start Screen -->
+            <section class="start-section" id="start-section">
+                <div class="start-card glass-card">
+                    <div class="start-icon">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="16" width="64" height="48" rx="6" stroke="currentColor" stroke-width="2.5"/>
+                            <circle cx="40" cy="40" r="14" stroke="currentColor" stroke-width="2.5"/>
+                            <circle cx="40" cy="40" r="6" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="58" cy="24" r="3" fill="currentColor" opacity="0.6"/>
+                            <path d="M20 68 L30 60 L50 60 L60 68" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h2>Real-Time Face Mask Detection</h2>
+                    <p class="start-desc">Start your webcam to detect face masks in real-time using AI. The system uses MobileNetV2 deep learning to classify mask vs no-mask with high accuracy.</p>
+                    <div class="start-features">
+                        <div class="feature-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            Live Detection
+                        </div>
+                        <div class="feature-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            High Accuracy
+                        </div>
+                        <div class="feature-chip">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            Real-Time FPS
+                        </div>
+                    </div>
+                    <button class="start-btn" id="start-btn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                        Start Webcam Detection
+                    </button>
+                    <p class="start-note">Your camera feed stays in your browser — no video is uploaded or stored.</p>
+                </div>
+            </section>
+
+            <!-- Live Detection Section -->
+            <section class="live-section" id="live-section" style="display:none;">
+                <!-- Stats Cards -->
+                <div class="stats-row">
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon stat-total">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-total">0</div>
+                        <div class="stat-label">Faces</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon stat-mask">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-mask">0</div>
+                        <div class="stat-label">Mask ✓</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon stat-no-mask">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-no-mask">0</div>
+                        <div class="stat-label">No Mask ✗</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon stat-fps">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="stat-fps">0</div>
+                        <div class="stat-label">FPS</div>
+                    </div>
+                </div>
+
+                <!-- Video Feed -->
+                <div class="video-card glass-card">
+                    <div class="video-header">
+                        <div class="video-title">
+                            <span class="live-dot"></span>
+                            <h3>Live Detection</h3>
+                        </div>
+                        <div class="video-actions">
+                            <button class="btn btn-ghost btn-sm" id="pause-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="pause-icon">
+                                    <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                                </svg>
+                                <span id="pause-text">Pause</span>
+                            </button>
+                            <button class="btn btn-ghost btn-sm" id="stop-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                </svg>
+                                Stop
+                            </button>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <!-- Hidden video element for webcam capture -->
+                        <video id="webcam-video" autoplay playsinline muted style="display:none;"></video>
+                        <!-- Canvas for capturing frames -->
+                        <canvas id="capture-canvas" style="display:none;"></canvas>
+                        <!-- Displayed result image -->
+                        <img id="result-image" alt="Detection Feed" class="result-feed">
+                        <!-- Overlay when paused -->
+                        <div class="video-overlay" id="video-overlay" style="display:none;">
+                            <span>PAUSED</span>
+                        </div>
+                        <!-- Overlay when loading -->
+                        <div class="video-overlay video-loading" id="video-loading">
+                            <div class="spinner">
+                                <div class="spinner-ring"></div>
+                                <div class="spinner-ring"></div>
+                                <div class="spinner-ring"></div>
+                            </div>
+                            <span>Starting camera...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detection Log -->
+                <div class="log-card glass-card" id="log-card">
+                    <h3>Detection Log</h3>
+                    <div class="detections-list" id="detections-list">
+                        <div class="detection-item empty-log">
+                            <span>Waiting for detections...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with <span class="heart">❤</span> by Team SheNova</p>
+            <p style="font-size: 0.75rem; margin-top: 5px; opacity: 0.7;">Powered by TensorFlow/Keras & OpenCV</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
